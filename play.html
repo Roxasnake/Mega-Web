@@ -14,66 +14,55 @@
 
 html, body {
 
-    margin: 0;
-    padding: 0;
+    margin:0;
+    padding:0;
 
-    width: 100%;
-    height: 100%;
+    width:100%;
+    height:100%;
 
-    background: #000;
+    background:#000;
 
-    overflow: hidden;
-
-    touch-action: none;
+    overflow:hidden;
 
 }
 
-
-/* Conteneur jeu */
 
 #game {
 
-    width: 100vw;
+    width:100vw;
 
-    height: 100vh;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
+    height:100vh;
 
 }
 
 
 
-/* Canvas optimisé TV */
+/* Centrage de l'affichage */
+
+#game > * {
+
+    max-width:100vw !important;
+
+    max-height:100vh !important;
+
+}
+
+
+
+/* Pixel art propre */
 
 canvas {
 
-    width: 960px !important;
-
-    height: 672px !important;
-
-    max-width: 100vw;
-
-    max-height: 100vh;
-
     image-rendering: pixelated;
-
-    image-rendering: crisp-edges;
 
 }
 
 
 
-/* Cache éléments inutiles */
+/* cacher éléments inutiles */
 
 .ejs_menu,
-.ejs_settings,
-.ejs_controls,
-.ejs_start_button,
-.ejs_loader {
+.ejs_settings {
 
     display:none !important;
 
@@ -97,24 +86,20 @@ canvas {
 
 
 const params =
-    new URLSearchParams(
-        window.location.search
-    );
+new URLSearchParams(
+    window.location.search
+);
 
 
 const romPath =
-    params.get("rom");
+params.get("rom");
 
-
-
-// Configuration EmulatorJS
 
 
 var EJS_player = "#game";
 
 
-
-// Core plus léger
+// moteur léger
 
 var EJS_core = "picodrive";
 
@@ -129,27 +114,21 @@ var EJS_gameUrl = romPath;
 
 
 
-// Démarrage automatique
+// démarrage automatique
 
 var EJS_startOnLoaded = true;
 
 
 
-// Désactive options lourdes
+// garde le son actif
+
+var EJS_volume = 1;
+
+
+
+// désactive uniquement les sauvegardes en ligne
 
 var EJS_disableDatabases = true;
-
-
-
-// Evite certains ralentissements
-
-var EJS_threads = false;
-
-
-
-// Désactive shaders
-
-var EJS_shader = "";
 
 
 
@@ -158,7 +137,6 @@ var EJS_shader = "";
 
 
 <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
-
 
 
 </body>
