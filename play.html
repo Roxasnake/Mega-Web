@@ -7,29 +7,57 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lecture Mega Drive</title>
+<title>Mega-Web Player</title>
 
 
 <style>
 
-body {
+html, body {
 
-    background:black;
+    margin: 0;
+    padding: 0;
 
-    margin:0;
+    width: 100%;
+    height: 100%;
 
-    overflow:hidden;
+    background: black;
+
+    overflow: hidden;
 
 }
 
 
 #game {
 
-    width:100vw;
-
-    height:100vh;
+    width: 100vw;
+    height: 100vh;
 
 }
+
+
+
+/* Garder le rendu rétro */
+
+canvas {
+
+    image-rendering: pixelated;
+
+    image-rendering: crisp-edges;
+
+}
+
+
+
+/* Cacher les menus inutiles */
+
+.ejs_menu,
+.ejs_settings,
+.ejs_controls {
+
+    display: none !important;
+
+}
+
 
 
 </style>
@@ -48,6 +76,8 @@ body {
 <script>
 
 
+// Récupération du jeu choisi depuis le menu
+
 const params =
     new URLSearchParams(
         window.location.search
@@ -58,6 +88,8 @@ const romPath =
     params.get("rom");
 
 
+
+// Configuration EmulatorJS
 
 var EJS_player = "#game";
 
@@ -74,9 +106,23 @@ var EJS_gameUrl = romPath;
 
 
 
+// Démarrage automatique
+
+var EJS_startOnLoaded = true;
+
+
+
+// Désactive certaines fonctions inutiles
+
+var EJS_disableDatabases = true;
+
+
+
 </script>
 
 
+
+<!-- Chargement EmulatorJS -->
 
 <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 
