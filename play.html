@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lecture Mega Drive</title>
+
+
+<style>
+
+body {
+
+    background:black;
+
+    margin:0;
+
+    overflow:hidden;
+
+}
+
+
+#game {
+
+    width:100vw;
+
+    height:100vh;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div id="game"></div>
+
+
+
+<script>
+
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const romPath =
+    params.get("rom");
+
+
+
+var EJS_player = "#game";
+
+
+var EJS_core = "genesis_plus_gx";
+
+
+var EJS_pathtodata =
+"https://cdn.emulatorjs.org/stable/data/";
+
+
+
+var EJS_gameUrl = romPath;
+
+
+
+</script>
+
+
+
+<script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+
+
+
+</body>
+
+</html>
