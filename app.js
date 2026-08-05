@@ -3,24 +3,21 @@ async function loadGames() {
 
     const response = await fetch("data/games.json");
 
-
     const games = await response.json();
 
 
-
-    const container = document.getElementById("games");
+    const container =
+        document.getElementById("games");
 
 
 
     games.forEach(game => {
 
 
-
-        const div = document.createElement("div");
-
+        const div =
+            document.createElement("div");
 
         div.className = "game";
-
 
 
         div.innerHTML = `
@@ -36,9 +33,7 @@ async function loadGames() {
         `;
 
 
-
         container.appendChild(div);
-
 
 
     });
@@ -59,15 +54,19 @@ async function loadRom(path) {
 
 
 
-        const response = await fetch(path);
+        const response =
+            await fetch(path);
 
 
 
         if (!response.ok) {
 
-            throw new Error("ROM introuvable");
+            throw new Error(
+                "ROM introuvable"
+            );
 
         }
+
 
 
 
@@ -77,7 +76,7 @@ async function loadRom(path) {
 
 
 
-        alert("Ouverture ZIP...");
+        alert("Extraction ZIP...");
 
 
 
@@ -92,27 +91,25 @@ async function loadRom(path) {
 
 
 
-        for (const fileName of Object.keys(zip.files)) {
-
+        for (const file of Object.keys(zip.files)) {
 
 
             if (
 
-                fileName.toLowerCase().endsWith(".md") ||
+                file.toLowerCase().endsWith(".md") ||
 
-                fileName.toLowerCase().endsWith(".bin") ||
+                file.toLowerCase().endsWith(".bin") ||
 
-                fileName.toLowerCase().endsWith(".gen")
+                file.toLowerCase().endsWith(".gen")
 
             ) {
 
 
-                romFile = fileName;
+                romFile = file;
 
                 break;
 
             }
-
 
         }
 
@@ -123,16 +120,15 @@ async function loadRom(path) {
 
 
             throw new Error(
-                "ROM Mega Drive introuvable"
+                "Aucune ROM trouvée"
             );
-
 
         }
 
 
 
 
-        const rom =
+        const romData =
             await zip.files[romFile]
             .async("arraybuffer");
 
@@ -146,9 +142,11 @@ async function loadRom(path) {
 
             romFile +
 
-            "\n\n" +
+            "\n\nTaille : " +
 
-            Math.round(rom.byteLength / 1024) +
+            Math.round(
+                romData.byteLength / 1024
+            ) +
 
             " Ko"
 
@@ -158,10 +156,10 @@ async function loadRom(path) {
 
 
 
-        const blob =
+        const romBlob =
             new Blob(
 
-                [rom],
+                [romData],
 
                 {
                     type:
@@ -174,47 +172,49 @@ async function loadRom(path) {
 
 
 
-        const url =
-            URL.createObjectURL(blob);
+        const romUrl =
+            URL.createObjectURL(
+                romBlob
+            );
 
 
 
 
 
-        /*
-          Passage de la ROM à EmulatorJS
-        */
+        // Donne la ROM à EmulatorJS
 
-
-        window.EJS_gameUrl = url;
-
-
-
-        alert("Démarrage EmulatorJS...");
+        window.EJS_gameUrl =
+            romUrl;
 
 
 
-        /*
-          On recharge le loader après
-          avoir donné la ROM
-        */
-
-
-        const loader =
-            document.createElement("script");
+        alert(
+            "Chargement de l'émulateur..."
+        );
 
 
 
-        loader.src =
+
+        // Charge EmulatorJS maintenant
+
+        const script =
+            document.createElement(
+                "script"
+            );
+
+
+
+        script.src =
         "https://cdn.emulatorjs.org/stable/data/loader.js";
 
 
 
-        document.body.appendChild(loader);
+        document.body.appendChild(script);
 
 
 
     }
+
 
     catch(error) {
 
