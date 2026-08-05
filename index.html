@@ -2,37 +2,49 @@
 <html lang="fr">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Mega-Web</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 
 <body>
 
+
 <div class="console">
 
     <h1>🎮 MEGA DRIVE</h1>
 
+
     <div id="games"></div>
+
 
     <hr>
 
+
     <h2>Écran de jeu</h2>
 
+
     <div id="game"></div>
+
 
 </div>
 
 
-<!-- Librairie ZIP -->
+
+<!-- ZIP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 
+
 <!-- Configuration EmulatorJS -->
+
 <script>
 
     var EJS_player = "#game";
@@ -40,16 +52,20 @@
     var EJS_core = "genesis_plus_gx";
 
     var EJS_pathtodata =
-    "https://cdn.emulatorjs.org/stable/data/";
+        "https://cdn.emulatorjs.org/stable/data/";
 
 </script>
 
 
-<!-- Chargeur EmulatorJS -->
+
+<!-- Moteur EmulatorJS -->
+
 <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 
 
-<!-- Notre code -->
+
+<!-- Notre programme -->
+
 <script src="app.js"></script>
 
 
