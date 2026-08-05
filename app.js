@@ -11,25 +11,42 @@ async function loadGames() {
         div.className = "game";
 
         div.innerHTML = `
-            <div>🎮 ${game.name}</div>
-            <div>${game.year}</div>
-            <button onclick="launchGame('${game.name}')">
+            <h2>🎮 ${game.name}</h2>
+            <p>${game.year}</p>
+            <button onclick="loadRom('${game.rom}')">
                 JOUER
             </button>
         `;
 
         container.appendChild(div);
-
     });
 }
 
 
-function launchGame(name) {
+async function loadRom(path) {
 
-    alert(
-        "Préparation du lancement de : " + name
-    );
+    try {
 
+        const response = await fetch(path);
+
+        if (!response.ok) {
+            throw new Error("ROM introuvable");
+        }
+
+        const data = await response.arrayBuffer();
+
+        alert(
+            "ROM chargée ! Taille : " +
+            Math.round(data.byteLength / 1024) +
+            " Ko"
+        );
+
+    }
+    catch(error) {
+
+        alert(error.message);
+
+    }
 }
 
 
