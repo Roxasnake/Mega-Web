@@ -1,17 +1,26 @@
 async function loadGames() {
 
+
     const response = await fetch("data/games.json");
 
+
     const games = await response.json();
+
+
 
     const container = document.getElementById("games");
 
 
+
     games.forEach(game => {
+
+
 
         const div = document.createElement("div");
 
+
         div.className = "game";
+
 
 
         div.innerHTML = `
@@ -27,11 +36,16 @@ async function loadGames() {
         `;
 
 
+
         container.appendChild(div);
+
+
 
     });
 
+
 }
+
 
 
 
@@ -41,12 +55,12 @@ async function loadRom(path) {
     try {
 
 
-        alert("Téléchargement de la ROM...");
+        alert("Téléchargement ROM...");
 
 
-        // Téléchargement du ZIP
 
         const response = await fetch(path);
+
 
 
         if (!response.ok) {
@@ -56,13 +70,20 @@ async function loadRom(path) {
         }
 
 
-        const zipData = await response.arrayBuffer();
+
+        const zipBuffer =
+            await response.arrayBuffer();
 
 
 
-        // Ouverture du ZIP
 
-        const zip = await JSZip.loadAsync(zipData);
+        alert("Ouverture ZIP...");
+
+
+
+        const zip =
+            await JSZip.loadAsync(zipBuffer);
+
 
 
 
@@ -70,44 +91,52 @@ async function loadRom(path) {
 
 
 
-        // Recherche de la ROM Mega Drive
 
-        Object.keys(zip.files).forEach(file => {
+        for (const fileName of Object.keys(zip.files)) {
+
 
 
             if (
 
-                file.toLowerCase().endsWith(".md") ||
+                fileName.toLowerCase().endsWith(".md") ||
 
-                file.toLowerCase().endsWith(".bin") ||
+                fileName.toLowerCase().endsWith(".bin") ||
 
-                file.toLowerCase().endsWith(".gen")
+                fileName.toLowerCase().endsWith(".gen")
 
             ) {
 
-                romFile = file;
+
+                romFile = fileName;
+
+                break;
 
             }
 
-
-        });
-
-
-
-        if (!romFile) {
-
-            throw new Error(
-                "Aucune ROM .md .bin ou .gen trouvée"
-            );
 
         }
 
 
 
-        // Extraction de la ROM
 
-        const romData = await zip.files[romFile]
+        if (!romFile) {
+
+
+            throw new Error(
+                "ROM Mega Drive introuvable"
+            );
+
+
+        }
+
+
+
+
+        const rom =
+            await zip.files[romFile]
             .async("arraybuffer");
+
+
 
 
 
@@ -117,9 +146,9 @@ async function loadRom(path) {
 
             romFile +
 
-            "\n\nTaille : " +
+            "\n\n" +
 
-            Math.round(romData.byteLength / 1024) +
+            Math.round(rom.byteLength / 1024) +
 
             " Ko"
 
@@ -127,64 +156,61 @@ async function loadRom(path) {
 
 
 
-        // Création d'un fichier temporaire navigateur
-
-        const romBlob = new Blob(
-
-            [romData],
-
-            {
-                type: "application/octet-stream"
-            }
-
-        );
 
 
+        const blob =
+            new Blob(
 
-        const romUrl = URL.createObjectURL(romBlob);
+                [rom],
+
+                {
+                    type:
+                    "application/octet-stream"
+                }
+
+            );
 
 
 
-        // Envoi à EmulatorJS
-
-        window.EJS_gameUrl = romUrl;
 
 
-
-        window.EJS_player = "#game";
-
-        window.EJS_core = "genesis_plus_gx";
-
-        window.EJS_pathtodata =
-            "https://cdn.emulatorjs.org/stable/data/";
+        const url =
+            URL.createObjectURL(blob);
 
 
 
-        // Chargement du moteur
-
-        if (window.EJS_emulator) {
 
 
-            window.EJS_emulator.start();
+        /*
+          Passage de la ROM à EmulatorJS
+        */
 
 
-        }
-        else {
+        window.EJS_gameUrl = url;
 
 
-            // Force le chargement EmulatorJS
 
-            const script = document.createElement("script");
-
-
-            script.src =
-            "https://cdn.emulatorjs.org/stable/data/loader.js";
+        alert("Démarrage EmulatorJS...");
 
 
-            document.body.appendChild(script);
+
+        /*
+          On recharge le loader après
+          avoir donné la ROM
+        */
 
 
-        }
+        const loader =
+            document.createElement("script");
+
+
+
+        loader.src =
+        "https://cdn.emulatorjs.org/stable/data/loader.js";
+
+
+
+        document.body.appendChild(loader);
 
 
 
@@ -194,7 +220,8 @@ async function loadRom(path) {
 
 
         alert(
-            "Erreur : " + error.message
+            "Erreur : " +
+            error.message
         );
 
 
@@ -202,6 +229,8 @@ async function loadRom(path) {
 
 
 }
+
+
 
 
 
