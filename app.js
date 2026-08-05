@@ -27,24 +27,52 @@ async function loadRom(path) {
 
     try {
 
+        alert("Téléchargement de la ROM...");
+
         const response = await fetch(path);
 
-        if (!response.ok) {
-            throw new Error("ROM introuvable");
+        const zipData = await response.arrayBuffer();
+
+        const zip = await JSZip.loadAsync(zipData);
+
+        let romFile = null;
+
+        Object.keys(zip.files).forEach(file => {
+
+            if (
+                file.toLowerCase().endsWith(".md") ||
+                file.toLowerCase().endsWith(".bin")
+            ) {
+                romFile = file;
+            }
+
+        });
+
+
+        if (!romFile) {
+            throw new Error("Aucune ROM .md ou .bin trouvée");
         }
 
-        const data = await response.arrayBuffer();
+
+        const romData = await zip.files[romFile].async("arrayBuffer");
+
 
         alert(
-            "ROM chargée ! Taille : " +
-            Math.round(data.byteLength / 1024) +
+            "ROM prête !\n\n" +
+            romFile +
+            "\n\nTaille : " +
+            Math.round(romData.byteLength / 1024) +
             " Ko"
         );
+
+
+        // Ici viendra l'émulateur Mega Drive
+
 
     }
     catch(error) {
 
-        alert(error.message);
+        alert("Erreur : " + error.message);
 
     }
 }
