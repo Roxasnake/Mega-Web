@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    background: #080820;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.console {
+    padding-top: 40px;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+.game {
+    margin: 30px auto;
+    padding: 20px;
+    width: 50%;
+    border: 3px solid #fff;
+    border-radius: 15px;
+    font-size: 30px;
+}
+
+button {
+    margin-top: 20px;
+    font-size: 25px;
+    padding: 15px 40px;
+}
